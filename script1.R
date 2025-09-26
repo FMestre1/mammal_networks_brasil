@@ -47,7 +47,7 @@ igraph::write_graph(metaweb_igraph, file = "metaweb_brasil.graphml", format = "g
 # 3. Create local networks adjacency matrices --------------------
 
 sites_names <- site_metrics$paisagem
-local_networks_list_igraph <- list()
+local_networks_list <- list()
 
 for(i in 1:length(sites_names)){
   
@@ -156,8 +156,12 @@ names(local_networks_list_cheddar) <- names(local_networks_list)
 #In cheddar we can create a cheddar object with all local food webs - a community
 community_collection <- CommunityCollection(local_networks_list_cheddar)
 #plot(community_collection)
-#CollectionCPS(community_collection, properties=NULL)
 
+#Checkout community properties
+CollectionCPS(community_collection, properties=NULL)
+
+#plot one food web
+plot3d_fw(1, label_type = "all", local_networks_list_igraph, local_networks_list_cheddar)
 
 #Save the lists as an RData
 save(local_networks_list_igraph, file = "local_networks_list_igraph.RData")
@@ -205,7 +209,6 @@ save(out_degree_distributions, file = "out_degree_distributions.RData")
 save(total_degree_distributions, file = "total_degree_distributions.RData")
 
 # Based on the cheddar community collection. "community_collection" --------------------
-
 community_collection <- cheddar::LoadCollection("community_collection_folder") # this is an option from cheddar to load the full community collection
 
 #Node metrics - cheddar

@@ -20,7 +20,7 @@ install_if_missing <- function(packages) {
 # -----------------------------------------------------------------------------
 
 # List of required packages  
-required_packages <- c("igraph", "cheddar", "taxize")
+required_packages <- c("igraph", "cheddar", "taxize", "rgl")
 install_if_missing(required_packages)  
 
 # Load required packages dynamically
@@ -34,7 +34,7 @@ rm(required_packages, install_if_missing)
 # -------------------------------------------------------------------------------
 # Required functions
 
-plot3d_fw <- function(position_list, label_type = "all") {
+plot3d_fw <- function(position_list, label_type = "all", igraph_list, cheddar_list) {
   
   cd <- cheddar_list[[position_list]]
   g <- igraph_list[[position_list]]
@@ -62,7 +62,7 @@ plot3d_fw <- function(position_list, label_type = "all") {
   spheres3d(positions$x, positions$y, positions$z, radius = 0.3, col = node_colors)
   
   # Plot edges
-  edges <- get.edgelist(g)
+  edges <- as_edgelist(g)
   for (i in 1:nrow(edges)) {
     node1 <- which(nodes == edges[i, 1])
     node2 <- which(nodes == edges[i, 2])
