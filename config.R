@@ -20,7 +20,7 @@ install_if_missing <- function(packages) {
 # -----------------------------------------------------------------------------
 
 # List of required packages  
-required_packages <- c("igraph", "cheddar", "taxize", "rgl")
+required_packages <- c("igraph", "cheddar", "taxize", "rgl", "NetIndices")
 install_if_missing(required_packages)  
 
 # Load required packages dynamically

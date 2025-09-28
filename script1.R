@@ -208,6 +208,48 @@ save(in_degree_distributions, file = "in_degree_distributions.RData")
 save(out_degree_distributions, file = "out_degree_distributions.RData")
 save(total_degree_distributions, file = "total_degree_distributions.RData")
 
+# Using NetIndices
+net_indices_metrics <- data.frame(
+  N_number_of_compartments = rep(NA, 55),
+  T_total_System_Throughput = rep(NA, 55),
+  TST_total_System_Throughflow = rep(NA, 55),
+  Lint_number_of_Internal_links = rep(NA, 55),
+  Ltot_total_number_of_links = rep(NA, 55),
+  LD_link_Density = rep(NA, 55),
+  C_connectance = rep(NA, 55),
+  Tijbar_average_Link_Weight = rep(NA, 55),
+  TSTbar_average_Compartment_Throughflow = rep(NA, 55),
+  Cbar_compartmentalization = rep(NA, 55)
+)
+
+for(i in 1:length(local_networks_list_igraph)){
+  
+test.graph.adj <- as_adjacency_matrix(local_networks_list_igraph[[i]],sparse=F)
+test.graph.properties <- NetIndices::GenInd(test.graph.adj)
+
+net_indices_metrics$N_number_of_compartments[i] <- test.graph.properties$N
+net_indices_metrics$T_total_System_Throughput[i] <- test.graph.properties$T..
+net_indices_metrics$TST_total_System_Throughflow[i] <- test.graph.properties$TST
+net_indices_metrics$Lint_number_of_Internal_links[i] <- test.graph.properties$Lint
+net_indices_metrics$Ltot_total_number_of_links[i] <- test.graph.properties$Ltot
+net_indices_metrics$LD_link_Density[i] <- test.graph.properties$LD
+net_indices_metrics$C_connectance[i] <- test.graph.properties$C
+net_indices_metrics$Tijbar_average_Link_Weight[i] <- test.graph.properties$Tijbar
+net_indices_metrics$TSTbar_average_Compartment_Throughflow[i] <- test.graph.properties$TSTbar
+net_indices_metrics$Cbar_compartmentalization[i] <- test.graph.properties$Cbar
+  
+
+  
+  
+  
+  
+}
+
+rownames(net_indices_metrics) <- names(local_networks_list_igraph)
+
+# Save
+save(net_indices_metrics, file = "net_indices_metrics.RData")
+
 # Based on the cheddar community collection. "community_collection" --------------------
 community_collection <- cheddar::LoadCollection("community_collection_folder") # this is an option from cheddar to load the full community collection
 
@@ -228,3 +270,7 @@ save(Longest_Trophic_Level, file = "Longest_Trophic_Level.RData")
 save(Long_Weighted_Trophic_Level, file = "Long_Weighted_Trophic_Level.RData")
 save(Chain_Averaged_Trophic_Level, file = "Chain_Averaged_Trophic_Level.RData")
 save(Trophic_Height, file = "Trophic_Height.RData")
+
+
+
+
