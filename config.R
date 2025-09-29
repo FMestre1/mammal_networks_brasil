@@ -100,3 +100,73 @@ plot3d_fw <- function(position_list, label_type = "all", igraph_list, cheddar_li
   rglwidget()
 }
 
+# Power-law function to fit
+power_law_func <- function(k, a, b, c) {
+  a * (k ^ b) + c
+}
+
+# Gaussian function to fit
+gaussian_func <- function(k, a, b, c) {
+  a * exp(-((k - b)^2) / (2 * c^2))
+}
+
+# Function to fit power-law or gaussian and compute Pearson R
+fit_distribution <- function(degree_values, degree_freq, dist_type = c("power_law", "gaussian")) {
+  dist_type <- match.arg(dist_type)
+  
+  # Objective function: sum of squared residuals for Nelder-Mead
+  ssr <- function(params) {
+    a <- params[1]
+    b <- params[2]
+    c <- params[3]
+    fitted <- if (dist_type == "power_law") {
+      power_law_func(degree_values, a, b, c)
+    } else {
+      gaussian_func(degree_values, a, b, c)
+    }
+    sum((degree_freq - fitted)^2)
+  }
+  
+  # Initial parameter guesses
+  init_params <- c(a=1, b= -1, c=0.1)
+  if (dist_type == "gaussian") init_params <- c(a=max(degree_freq), b=mean(degree_values), c=sd(degree_values))
+  
+  # Optimization (Nelder-Mead)
+  opt <- optim(init_params, ssr, method="Nelder-Mead")
+  
+  a <- opt$par[1]
+  b <- opt$par[2]
+  c <- opt$par[3]
+  
+  fitted <- if (dist_type == "power_law") {
+    power_law_func(degree_values, a, b, c)
+  } else {
+    gaussian_func(degree_values, a, b, c)
+  }
+  
+  # Pearson correlation coefficient R between observed freq and fitted
+  R <- cor(degree_freq, fitted)
+  
+  list(params=opt$par, fitted=fitted, R=R)
+}
+
+# Main function to compare degree distribution of igraph networks list
+compare_degree_distributions <- function(g_list) {
+  results <- lapply(g_list, function(g) {
+    deg <- degree(g, mode="all")
+    deg_tab <- table(deg)
+    degree_values <- as.numeric(names(deg_tab))
+    degree_freq <- as.numeric(deg_tab) / sum(deg_tab)  # relative frequency
+    
+    pl_fit <- fit_distribution(degree_values, degree_freq, "power_law")
+    gauss_fit <- fit_distribution(degree_values, degree_freq, "gaussian")
+    
+    c(RG = gauss_fit$R, RPL = pl_fit$R)
+  })
+  
+  # combine into a dataframe
+  results_df <- do.call(rbind, results)
+  rownames(results_df) <- seq_along(g_list)
+  return(as.data.frame(results_df))
+}
+

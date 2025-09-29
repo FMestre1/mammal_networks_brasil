@@ -6,7 +6,7 @@
 #25-09-2025
 
 ##################################################################################################################
-# 0. Config -------------------------------------------------------
+# 0. Load Config --------------------------------------------------
 
 source("config.R")
 
@@ -158,7 +158,7 @@ community_collection <- CommunityCollection(local_networks_list_cheddar)
 #plot(community_collection)
 
 #Checkout community properties
-CollectionCPS(community_collection, properties=NULL)
+collectionCPS_data_frame <- CollectionCPS(community_collection, properties=NULL)
 
 #plot one food web
 plot3d_fw(1, label_type = "all", local_networks_list_igraph, local_networks_list_cheddar)
@@ -180,20 +180,38 @@ local_networks_list_igraph <- get(load("local_networks_list_igraph.RData"))
 in_degree_distributions <- list()
 out_degree_distributions <- list()
 total_degree_distributions <- list()
+#
+in_degree_distributions_non_cumulative <- list()
+out_degree_distributions_non_cumulative <- list()
+total_degree_distributions_non_cumulative <- list()
 
 for(i in 1:length(local_networks_list_igraph)){
 
+# Cumulative
 indeg <- degree_distribution(local_networks_list_igraph[[i]], cumulative = TRUE, mode = "in") # in degree distribution
 outdeg <- degree_distribution(local_networks_list_igraph[[i]], cumulative = TRUE, mode = "out") #out degreee distribution
 fulldeg <- degree_distribution(local_networks_list_igraph[[i]], cumulative = TRUE, mode = "all")  # total degree
+# Non-Cumulative
+indeg_nc <- degree_distribution(local_networks_list_igraph[[i]], cumulative = FALSE, mode = "in") # in degree distribution
+outdeg_nc <- degree_distribution(local_networks_list_igraph[[i]], cumulative = FALSE, mode = "out") #out degreee distribution
+fulldeg_nc <- degree_distribution(local_networks_list_igraph[[i]], cumulative = FALSE, mode = "all")  # total degree
 
-plot(indeg, type="l")
-plot(outdeg, type="l")
-plot(fulldeg, type="l")
+#plot(indeg, type="l")
+#plot(outdeg, type="l")
+#plot(fulldeg, type="l")
+
+#plot(indeg_nc, type="l")
+#plot(outdeg_nc, type="l")
+#plot(fulldeg_nc, type="l")
   
 in_degree_distributions[[i]] <- indeg
 out_degree_distributions[[i]] <- outdeg
 total_degree_distributions[[i]] <- fulldeg
+#
+in_degree_distributions_non_cumulative[[i]] <- indeg_nc
+out_degree_distributions_non_cumulative[[i]] <- outdeg_nc
+total_degree_distributions_non_cumulative[[i]] <- fulldeg_nc
+
 
 message(names(local_networks_list_igraph)[i])
 
@@ -203,10 +221,18 @@ names(in_degree_distributions) <- names(local_networks_list_igraph)
 names(out_degree_distributions) <- names(local_networks_list_igraph)
 names(total_degree_distributions) <- names(local_networks_list_igraph)
 
+names(in_degree_distributions_non_cumulative) <- names(local_networks_list_igraph)
+names(out_degree_distributions_non_cumulative) <- names(local_networks_list_igraph)
+names(total_degree_distributions_non_cumulative) <- names(local_networks_list_igraph)
+
 # Save these lists
 save(in_degree_distributions, file = "in_degree_distributions.RData")
 save(out_degree_distributions, file = "out_degree_distributions.RData")
 save(total_degree_distributions, file = "total_degree_distributions.RData")
+#
+save(in_degree_distributions_non_cumulative, file = "in_degree_distributions.RData")
+save(out_degree_distributions_non_cumulative, file = "out_degree_distributions.RData")
+save(total_degree_distributions_non_cumulative, file = "total_degree_distributions.RData")
 
 # Using NetIndices
 net_indices_metrics <- data.frame(
@@ -247,8 +273,17 @@ net_indices_metrics$Cbar_compartmentalization[i] <- test.graph.properties$Cbar
 
 rownames(net_indices_metrics) <- names(local_networks_list_igraph)
 
+metrics_df <- data.frame(collectionCPS_data_frame,
+           net_indices_metrics
+          )
+
+#View(metrics_df)
+
 # Save
-save(net_indices_metrics, file = "net_indices_metrics.RData")
+write.csv(net_indices_metrics, file = "net_indices_metrics.csv")
+write.csv(collectionCPS_data_frame, file = "collectionCPS_data_frame.csv")
+write.csv(metrics_df, file = "metrics_df.csv")
+
 
 # Based on the cheddar community collection. "community_collection" --------------------
 community_collection <- cheddar::LoadCollection("community_collection_folder") # this is an option from cheddar to load the full community collection
@@ -270,7 +305,4 @@ save(Longest_Trophic_Level, file = "Longest_Trophic_Level.RData")
 save(Long_Weighted_Trophic_Level, file = "Long_Weighted_Trophic_Level.RData")
 save(Chain_Averaged_Trophic_Level, file = "Chain_Averaged_Trophic_Level.RData")
 save(Trophic_Height, file = "Trophic_Height.RData")
-
-
-
 
