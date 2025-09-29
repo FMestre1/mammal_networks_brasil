@@ -16,7 +16,8 @@ rownames(RPL_RG) <- names(local_networks_list_igraph)
 
 #Save
 write.csv(RPL_RG, file = "RPL_RG.csv")
-
+#Read
+RPL_RG <- read.csv("RPL_RG.csv", row.names = 1)
 
 #plot with a rede gradient using the dost_to_10 column
 plot(RPL_RG[,1:2])
@@ -32,19 +33,49 @@ plot(RPL_RG[,1:2], col = heat.colors(nrow(RPL_RG))[rank(RPL_RG$dist_to_PL)], pch
 
 # Combine with metrics -----------------------------------------------------------------------------
 
-#Load nmetrics
+#Load metrics
 metrics_df <- read.csv("metrics_df.csv", row.names = 1)
 
-#Combine
+#Combine with RPL_RG data frame
 metrics_with_distances_to_pure_topologies <- data.frame(RPL_RG, metrics_df)
 
 #View
 #View(metrics_with_distances_to_pure_topologies)
 
+#Save & Read
+write.csv(metrics_with_distances_to_pure_topologies, file = "metrics_with_distances_to_pure_topologies.csv")
+metrics_with_distances_to_pure_topologies <- read.csv("metrics_with_distances_to_pure_topologies.csv", row.names = 1)
+metrics_with_distances_to_pure_topologies <- metrics_with_distances_to_pure_topologies[,-5]
+
+#Load site metrics
 site_metrics <- read.csv("C:\\Users\\mestr\\Documents\\0. Artigos\\brasil_predator_prey_mammal_networks\\metricas_paisagem.csv", sep = ";")
 
 #Explore
-plot(metrics_with_distances_to_pure_topologies$LD_link_Density, site_metrics$ENN_3000)
-#
-glm(metrics_with_distances_to_pure_topologies$LD_link_Density ~ site_metrics$ENN_3000)
+#View(metrics_with_distances_to_pure_topologies)
+#View(site_metrics)
+response_vars <- names(metrics_with_distances_to_pure_topologies[,-c(1:2)])
+predictive_vars <- names(site_metrics)[-1]
 
+sig_matrix <- data.frame(matrix(nrow = length(response_vars), ncol = length(predictive_vars)))
+colnames(sig_matrix) <- predictive_vars
+rownames(sig_matrix) <- response_vars
+
+for (i in 1:length(response_vars)) {
+  for (j in 1:length(predictive_vars)) {
+    
+plot(metrics_with_distances_to_pure_topologies[,response_vars[i]], site_metrics[,predictive_vars[i]])
+#
+p1 <- glm(metrics_with_distances_to_pure_topologies[,response_vars[i]] ~ site_metrics[,predictive_vars[i]])
+    
+# Extract coefficients with p-values
+sig_level <- round(coef(summary(p1))[2,4], 3)
+    
+    sig_matrix[i, j] <- sig_level
+  }
+}
+
+#View
+View(sig_matrix)
+View(sig_matrix < 0.05)
+#Save
+write.csv(sig_matrix, file = "sig_matrix.csv")
