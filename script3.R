@@ -1,20 +1,32 @@
 ##################################################################################################################
-#                                     Mammal networks and landscape structure
+#                                     Node centrality and landscape structure
 ##################################################################################################################
 
 #FMestre
 #30-09-2025
 
+# 0. Load Config
+# 1. Landscape metrics
+# 2. Landscape metrics
+# 3. Load metaweb
+# 4. Load local food webs
+# 5. Derive species metrics in several networks
+# 6. Plot species metrics through landscape
+
+## --------------------------------------------------------------------------------------
+# 0. Load Config
+## --------------------------------------------------------------------------------------
+
 source("config.R")
 
 ## --------------------------------------------------------------------------------------
-# 0. Landscape metrics
+# 2. Landscape metrics
 ## --------------------------------------------------------------------------------------
 
 site_metrics <- read.csv("C:\\Users\\mestr\\Documents\\0. Artigos\\brasil_predator_prey_mammal_networks\\metricas_paisagem.csv", sep = ";")
 
 ## --------------------------------------------------------------------------------------
-# 1. Load metaweb
+# 3. Load metaweb
 ## --------------------------------------------------------------------------------------
 
 # Load cheddar metaweb
@@ -36,7 +48,7 @@ community_collection <- cheddar::LoadCollection("community_collection_folder")
 collectionCPS_data_frame <- CollectionCPS(community_collection, properties=NULL)
 
 ## --------------------------------------------------------------------------------------
-# 2. Load local food webs
+# 4. Load local food webs
 ## --------------------------------------------------------------------------------------
 
 #Load adjacency data frames for local FW
@@ -50,7 +62,7 @@ local_networks_list_cheddar <- get(load("local_networks_list_cheddar.RData"))
 #Get all species from cheddar
 
 ## --------------------------------------------------------------------------------------
-# 3. Derive species metrics in several networks
+# 5. Derive species metrics in several networks
 ## --------------------------------------------------------------------------------------
 
 # Node Metrics in Several Networks - igraph
@@ -113,7 +125,7 @@ save(Chain_Averaged_Trophic_Level_df, file = "Chain_Averaged_Trophic_Level_df.RD
 save(Trophic_Height_df, file = "Trophic_Height_df.RData")
 
 ## --------------------------------------------------------------------------------------
-# 4. Plot species metrics through landscape
+# 6. Plot species metrics through landscape
 ## --------------------------------------------------------------------------------------
 
 ## IVI ----------------------------------------------------------------------------------
@@ -122,7 +134,34 @@ ivi_df_T <- t(ivi_df)
 landscape_metrics_ivi_df_T <- cbind(site_metrics, ivi_df_T)
 #names(landscape_metrics_ivi_df_T)[27:54]
 
-plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T$Puma_concolor)
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,27], main = names(landscape_metrics_ivi_df_T)[27])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,28], main = names(landscape_metrics_ivi_df_T)[28])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,29], main = names(landscape_metrics_ivi_df_T)[29])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,30], main = names(landscape_metrics_ivi_df_T)[30])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,31], main = names(landscape_metrics_ivi_df_T)[31])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,32], main = names(landscape_metrics_ivi_df_T)[32])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,33], main = names(landscape_metrics_ivi_df_T)[33])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,34], main = names(landscape_metrics_ivi_df_T)[34])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,35], main = names(landscape_metrics_ivi_df_T)[35])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,36], main = names(landscape_metrics_ivi_df_T)[36])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,37], main = names(landscape_metrics_ivi_df_T)[37])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,38], main = names(landscape_metrics_ivi_df_T)[38])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,39], main = names(landscape_metrics_ivi_df_T)[39])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,40], main = names(landscape_metrics_ivi_df_T)[40])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,41], main = names(landscape_metrics_ivi_df_T)[41])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,42], main = names(landscape_metrics_ivi_df_T)[42])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,43], main = names(landscape_metrics_ivi_df_T)[43])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,44], main = names(landscape_metrics_ivi_df_T)[44])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,45], main = names(landscape_metrics_ivi_df_T)[45])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,46], main = names(landscape_metrics_ivi_df_T)[46])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,47], main = names(landscape_metrics_ivi_df_T)[47])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,48], main = names(landscape_metrics_ivi_df_T)[48])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,49], main = names(landscape_metrics_ivi_df_T)[49])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,50], main = names(landscape_metrics_ivi_df_T)[50])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,51], main = names(landscape_metrics_ivi_df_T)[51])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,52], main = names(landscape_metrics_ivi_df_T)[52])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,53], main = names(landscape_metrics_ivi_df_T)[53])
+plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,54], main = names(landscape_metrics_ivi_df_T)[54])
 
 ## Betweenness -------------------------------------------------------------------------
 
@@ -130,72 +169,35 @@ betweenness_df_T <- t(betweenness_df)
 landscape_metrics_betweenness_df_T <- cbind(site_metrics, betweenness_df_T)
 #names(landscape_metrics_betweenness_df_T)[27:54]
 
-plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T$Puma_concolor)
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,27], main = names(landscape_metrics_betweenness_df_T)[27])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,28], main = names(landscape_metrics_betweenness_df_T)[28])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,29], main = names(landscape_metrics_betweenness_df_T)[29])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,30], main = names(landscape_metrics_betweenness_df_T)[30])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,31], main = names(landscape_metrics_betweenness_df_T)[31])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,32], main = names(landscape_metrics_betweenness_df_T)[32])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,33], main = names(landscape_metrics_betweenness_df_T)[33])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,34], main = names(landscape_metrics_betweenness_df_T)[34])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,35], main = names(landscape_metrics_betweenness_df_T)[35])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,36], main = names(landscape_metrics_betweenness_df_T)[36])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,37], main = names(landscape_metrics_betweenness_df_T)[37])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,38], main = names(landscape_metrics_betweenness_df_T)[38])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,39], main = names(landscape_metrics_betweenness_df_T)[39])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,40], main = names(landscape_metrics_betweenness_df_T)[40])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,41], main = names(landscape_metrics_betweenness_df_T)[41])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,42], main = names(landscape_metrics_betweenness_df_T)[42])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,43], main = names(landscape_metrics_betweenness_df_T)[43])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,44], main = names(landscape_metrics_betweenness_df_T)[44])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,45], main = names(landscape_metrics_betweenness_df_T)[45])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,46], main = names(landscape_metrics_betweenness_df_T)[46])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,47], main = names(landscape_metrics_betweenness_df_T)[47])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,48], main = names(landscape_metrics_betweenness_df_T)[48])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,49], main = names(landscape_metrics_betweenness_df_T)[49])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,50], main = names(landscape_metrics_betweenness_df_T)[50])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,51], main = names(landscape_metrics_betweenness_df_T)[51])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,52], main = names(landscape_metrics_betweenness_df_T)[52])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,53], main = names(landscape_metrics_betweenness_df_T)[53])
+plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,54], main = names(landscape_metrics_betweenness_df_T)[54])
 
-## Closeness ---------------------------------------------------------------------------
-
-closeness_df_T <- t(closeness_df)
-landscape_metrics_closeness_df_T <- cbind(site_metrics, closeness_df_T)
-#names(landscape_metrics_closeness_df_T)[27:54]
-
-plot(landscape_metrics_closeness_df_T$Sug_1400, landscape_metrics_closeness_df_T$Leopardus_guttulus)
-plot(landscape_metrics_closeness_df_T$SHDI_1400, landscape_metrics_closeness_df_T$Leopardus_guttulus)
-plot(landscape_metrics_closeness_df_T$rodovias_1400, landscape_metrics_closeness_df_T$Leopardus_guttulus)
-plot(landscape_metrics_closeness_df_T$dist_rodovia, landscape_metrics_closeness_df_T$Leopardus_guttulus)
-plot(landscape_metrics_closeness_df_T$NatV_1400, landscape_metrics_closeness_df_T$Leopardus_guttulus)
-
-(...)
-
-## --------------------------------------------------------------------------------------
-# 5. Fractions
-## --------------------------------------------------------------------------------------
-
-Fraction_Basal_Nodes <- sapply(community_collection, "FractionBasalNodes")
-Fraction_Intermediate_Nodes <- sapply(community_collection, "FractionIntermediateNodes")
-Fraction_Top_Level_Nodes <- sapply(community_collection, "FractionTopLevelNodes")
-Fraction_Isolated_Nodes <- sapply(community_collection, "FractionIsolatedNodes")
-Fraction_Non_Basal_Nodes <- sapply(community_collection, "FractionNonBasalNodes")
-Fraction_Non_Top_Level_Nodes <- sapply(community_collection, "FractionNonTopLevelNodes")
-
-#Distance to road
-plot(landscape_metrics_closeness_df_T$dist_rodovia, Fraction_Basal_Nodes)
-plot(landscape_metrics_closeness_df_T$dist_rodovia, Fraction_Intermediate_Nodes)
-plot(landscape_metrics_closeness_df_T$dist_rodovia, Fraction_Top_Level_Nodes)
-plot(landscape_metrics_closeness_df_T$dist_rodovia, Fraction_Isolated_Nodes)
-#plot(landscape_metrics_closeness_df_T$dist_rodovia, Fraction_Non_Basal_Nodes)
-#plot(landscape_metrics_closeness_df_T$dist_rodovia, Fraction_Non_Top_Level_Nodes)
-
-#Distance to road
-plot(landscape_metrics_closeness_df_T$SHDI_1400, Fraction_Basal_Nodes)
-plot(landscape_metrics_closeness_df_T$SHDI_1400, Fraction_Intermediate_Nodes)
-plot(landscape_metrics_closeness_df_T$SHDI_1400, Fraction_Top_Level_Nodes)
-plot(landscape_metrics_closeness_df_T$SHDI_1400, Fraction_Isolated_Nodes)
-#plot(landscape_metrics_closeness_df_T$SHDI_1400, Fraction_Non_Basal_Nodes)
-#plot(landscape_metrics_closeness_df_T$SHDI_1400, Fraction_Non_Top_Level_Nodes)
-
-#Road density
-plot(landscape_metrics_closeness_df_T$rodovias_1400, Fraction_Basal_Nodes)
-plot(landscape_metrics_closeness_df_T$rodovias_1400, Fraction_Intermediate_Nodes)
-plot(landscape_metrics_closeness_df_T$rodovias_1400, Fraction_Top_Level_Nodes)
-plot(landscape_metrics_closeness_df_T$rodovias_1400, Fraction_Isolated_Nodes)
-#plot(landscape_metrics_closeness_df_T$rodovias_1400, Fraction_Non_Basal_Nodes)
-#plot(landscape_metrics_closeness_df_T$rodovias_1400, Fraction_Non_Top_Level_Nodes)
-
-#Sugar cane
-plot(landscape_metrics_closeness_df_T$Sug_1400, Fraction_Basal_Nodes)
-plot(landscape_metrics_closeness_df_T$Sug_1400, Fraction_Intermediate_Nodes)
-plot(landscape_metrics_closeness_df_T$Sug_1400, Fraction_Top_Level_Nodes)
-plot(landscape_metrics_closeness_df_T$Sug_1400, Fraction_Isolated_Nodes)
-#plot(landscape_metrics_closeness_df_T$Sug_1400, Fraction_Non_Basal_Nodes)
-#plot(landscape_metrics_closeness_df_T$Sug_1400, Fraction_Non_Top_Level_Nodes)
-
-#Sugar cane
-plot(landscape_metrics_closeness_df_T$NatV_1400, Fraction_Basal_Nodes)
-plot(landscape_metrics_closeness_df_T$NatV_1400, Fraction_Intermediate_Nodes)
-plot(landscape_metrics_closeness_df_T$NatV_1400, Fraction_Top_Level_Nodes)
-plot(landscape_metrics_closeness_df_T$NatV_1400, Fraction_Isolated_Nodes)
-#plot(landscape_metrics_closeness_df_T$NatV_1400, Fraction_Non_Basal_Nodes)
-#plot(landscape_metrics_closeness_df_T$NatV_1400, Fraction_Non_Top_Level_Nodes)
 
 
 

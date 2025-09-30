@@ -1,16 +1,31 @@
 ##################################################################################################################
-#                                     Mammal networks and landscape structure
+#                                  Load data and creating igraph and cheddar objects
+#                                                   and network metrics                   
 ##################################################################################################################
 
 #FMestre
 #25-09-2025
 
-##################################################################################################################
-# 0. Load Config --------------------------------------------------
+# 0. Load Config
+# 1. Load data 
+# 2. Create metaweb graph and save it in GraphML format
+# 3. Convert metaweb to cheddar community
+# 4. Create local networks adjacency matrices
+# 5. Create igraph and cheddar objects representing local FW
+# 6. Derive network metrics
+  # 6.1. Based on the igraph list "local_networks_list_igraph"
+  # 6.2. Using package NetIndices
+  # 6.3. Based on the cheddar community collection
+
+## --------------------------------------------------------------------------------------
+# 0. Load Config
+## --------------------------------------------------------------------------------------
 
 source("config.R")
 
-# 1. Load data ----------------------------------------------------
+## --------------------------------------------------------------------------------------
+# 1. Load data
+## --------------------------------------------------------------------------------------
 
 metaweb <- read.csv("C:\\Users\\mestr\\Documents\\0. Artigos\\brasil_predator_prey_mammal_networks\\metaweb_brasil.csv", sep=";")
 site_metrics <- read.csv("C:\\Users\\mestr\\Documents\\0. Artigos\\brasil_predator_prey_mammal_networks\\metricas_paisagem.csv", sep = ";")
@@ -24,8 +39,9 @@ rownames(metaweb) <- metaweb$X
 metaweb <- metaweb[,-1]
 metaweb[is.na(metaweb)] <- 0
 
-##################################################################################################################
-# 2. Create metaweb graph and save it in GraphML format -----------
+## --------------------------------------------------------------------------------------
+# 2. Create metaweb graph and save it in GraphML format
+## --------------------------------------------------------------------------------------
 
 # Convert to predator-prey pairs
 edges1 <- which(metaweb == 1, arr.ind = TRUE)
@@ -43,8 +59,9 @@ metaweb_igraph <- igraph::graph_from_data_frame(edges1, directed = TRUE)
 # Save the network in GraphML format
 igraph::write_graph(metaweb_igraph, file = "metaweb_brasil.graphml", format = "graphml")
 
-##################################################################################################################
-#3. Convert metaweb to cheddar community
+## --------------------------------------------------------------------------------------
+# 3. Convert metaweb to cheddar community
+## --------------------------------------------------------------------------------------
 
 # Load adajacency data frame
 metaweb_adjacency <- read.csv("C:\\Users\\mestr\\Documents\\0. Artigos\\brasil_predator_prey_mammal_networks\\metaweb_brasil.csv", sep=";")
@@ -73,8 +90,9 @@ plot3d_fw(1, label_type = "all", list(metaweb_igraph), list(metaweb_cheddar))
 cheddar::SaveCommunity(metaweb_cheddar, "metaweb_cheddar.RData")
 metaweb_cheddar <- cheddar::LoadCommunity("metaweb_cheddar.RData")
 
-##################################################################################################################
-# 3. Create local networks adjacency matrices --------------------
+## --------------------------------------------------------------------------------------
+# 4. Create local networks adjacency matrices
+## --------------------------------------------------------------------------------------
 
 sites_names <- site_metrics$paisagem
 local_networks_list <- list()
@@ -112,8 +130,9 @@ for(i in 1:length(sites_names)){
 #Save it as RData
 save(local_networks_list, file = "local_networks_list.RData")
 
-##################################################################################################################
-# 4. Create igraph and cheddar objects representing local FW ------
+## --------------------------------------------------------------------------------------
+# 5. Create igraph and cheddar objects representing local FW
+## --------------------------------------------------------------------------------------
 
 #Create empty cheddar list of objects
 local_networks_list_igraph <- list()
@@ -207,10 +226,11 @@ load("community_collection_cheddar.RData")
 #Load cheddar community collection
 community_collection <- cheddar::LoadCollection("community_collection_folder")
 
-##################################################################################################################
-# 5. Derive network metrics --------------------------------------
+## --------------------------------------------------------------------------------------
+# 6. Derive network metrics
+## --------------------------------------------------------------------------------------
 
-# 5.1. Based on the igraph list "local_networks_list_igraph" --------------------
+  # 6.1. Based on the igraph list "local_networks_list_igraph" --------------------------
 
 # In-degree distribution - both culumative and non-cumulative
 
@@ -273,7 +293,8 @@ save(in_degree_distributions_non_cumulative, file = "in_degree_distributions.RDa
 save(out_degree_distributions_non_cumulative, file = "out_degree_distributions.RData")
 save(total_degree_distributions_non_cumulative, file = "total_degree_distributions.RData")
 
-# Using package NetIndices
+  # 6.2. Using package NetIndices ----------------------------------------------------------
+
 net_indices_metrics <- data.frame(
   N_number_of_compartments = rep(NA, 55),
   T_total_System_Throughput = rep(NA, 55),
@@ -319,7 +340,7 @@ write.csv(collectionCPS_data_frame, file = "collectionCPS_data_frame.csv")
 write.csv(metrics_df, file = "metrics_df.csv")
 
 
-# Based on the cheddar community collection. "community_collection" --------------------
+  # 6.3. Based on the cheddar community collection. "community_collection" -----------------
 community_collection <- cheddar::LoadCollection("community_collection_folder") # this is an option from cheddar to load the full community collection
 
 #Node metrics - cheddar

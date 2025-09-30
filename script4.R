@@ -5,16 +5,26 @@
 #FMestre
 #30-09-2025
 
+# 0. Load Config
+# 1. Landscape metrics
+# 2. Load metaweb
+# 3. Load local food webs
+# 4. Generate all possible models up until three variables
+
+## --------------------------------------------------------------------------------------
+# 0. Load Config
+## --------------------------------------------------------------------------------------
+
 source("config.R")
 
 ## --------------------------------------------------------------------------------------
-# 0. Landscape metrics
+# 1. Landscape metrics
 ## --------------------------------------------------------------------------------------
 
 site_metrics <- read.csv("C:\\Users\\mestr\\Documents\\0. Artigos\\brasil_predator_prey_mammal_networks\\metricas_paisagem.csv", sep = ";")
 
 ## --------------------------------------------------------------------------------------
-# 1. Load metaweb
+# 2. Load metaweb
 ## --------------------------------------------------------------------------------------
 
 # Load igraph metaweb
@@ -24,7 +34,7 @@ metaweb_igraph <- igraph::read_graph("metaweb_brasil.graphml", format = "graphml
 edges_metaweb_df <- igraph::as_data_frame(metaweb_igraph, what = "edges")
 
 ## --------------------------------------------------------------------------------------
-# 2. Load local food webs
+# 3. Load local food webs
 ## --------------------------------------------------------------------------------------
 
 #load igraph list
@@ -43,7 +53,6 @@ percentage_overlap[[i]] <- round((nrow(edges_local_df)/nrow(edges_metaweb_df))*1
 fraction_metaweb_in_local <- data.frame(names(local_networks_list_igraph), percentage_overlap)
 names(fraction_metaweb_in_local) <- c("site", "fraction_metaweb_in_local")
 
-#
 overlap1 <- cbind(site_metrics, fraction_metaweb_in_local)
 
 landscape_metrics <- names(site_metrics)[-1]
@@ -61,7 +70,7 @@ p_value[i] <- sum1$coefficients[2,4]
 p_value < 0.05 # No single variable is significant!
 
 ### -----------------------------------------------------------------------------------------
-#                  Generate all possible models up until three variables
+# 4.                Generate all possible models up until three variables
 ### -----------------------------------------------------------------------------------------
 
 # Vector of candidate predictors
@@ -116,7 +125,7 @@ sig_models <- sig_models[order(sig_models$AIC), ]
 sig_models[1,]
 
 coef_tables[[50]]
-#coef_tables[[343]]
+coef_tables[[343]]
 
 
 
