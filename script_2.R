@@ -5,6 +5,8 @@
 #FMestre
 #29-09-2025
 
+source("config.R")
+
 # Compute ------------------------------------------------------------------------------------------
 RPL_RG <- compare_degree_distributions(local_networks_list_igraph)
 plot(RPL_RG)
@@ -63,15 +65,36 @@ rownames(sig_matrix) <- response_vars
 for (i in 1:length(response_vars)) {
   for (j in 1:length(predictive_vars)) {
     
-plot(metrics_with_distances_to_pure_topologies[,response_vars[i]], site_metrics[,predictive_vars[i]])
-#
-p1 <- glm(metrics_with_distances_to_pure_topologies[,response_vars[i]] ~ site_metrics[,predictive_vars[i]])
+
+
+    #
+    p1 <- glm(metrics_with_distances_to_pure_topologies[,response_vars[i]] ~ site_metrics[,predictive_vars[j]])
     
-# Extract coefficients with p-values
-sig_level <- round(coef(summary(p1))[2,4], 3)
+    # Extract coefficients with p-values
+    sig_level <- round(coef(summary(p1))[2,4], 3)
+
+    if(sig_level < 0.05){
+
+      plot(
+          site_metrics[, predictive_vars[j]],
+          metrics_with_distances_to_pure_topologies[, response_vars[i]],
+          xlab = predictive_vars[j],     # label for the x-axis
+          ylab = response_vars[i]        # label for the y-axis
+          )
+      # Add model fit
+      xvals <- seq(min(site_metrics[, predictive_vars[j]], na.rm = TRUE),
+             max(site_metrics[, predictive_vars[j]], na.rm = TRUE),
+             length.out = 200)
+
+      yvals <- predict(p1, newdata = data.frame(`site_metrics[, predictive_vars[j]]` = xvals), type = "response")
+
+      lines(xvals, yvals, col = "red", lwd = 2)
+      
+    }
     
     sig_matrix[i, j] <- sig_level
   }
+
 }
 
 #View

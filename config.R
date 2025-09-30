@@ -20,7 +20,7 @@ install_if_missing <- function(packages) {
 # -----------------------------------------------------------------------------
 
 # List of required packages  
-required_packages <- c("igraph", "cheddar", "taxize", "rgl", "NetIndices")
+required_packages <- c("igraph", "cheddar", "taxize", "rgl", "NetIndices", "influential", "caret")
 install_if_missing(required_packages)  
 
 # Load required packages dynamically
@@ -170,3 +170,41 @@ compare_degree_distributions <- function(g_list) {
   return(as.data.frame(results_df))
 }
 
+# Function to convert list of named vectors to a data frame, handling missing species
+list_to_df <- function(metric_list) {
+  # Get all unique species names across all networks
+  all_species <- unique(unlist(lapply(metric_list, names)))
+  
+  # Create an empty data frame with species as rows and networks as columns
+  df <- matrix(NA, nrow = length(all_species), ncol = length(metric_list))
+  colnames(df) <- names(metric_list)
+  rownames(df) <- all_species
+  
+  # Fill the data frame
+  for (i in seq_along(metric_list)) {
+    network_name <- names(metric_list)[i]
+    metric_values <- metric_list[[i]]
+    
+    # Match species and assign values
+    df[names(metric_values), network_name] <- metric_values
+  }
+  return(as.data.frame(df))
+}
+
+# Function to convert a list of named vectors (from sapply) to a data frame
+cheddar_list_to_df <- function(cheddar_metric_list, all_species_names) {
+  df <- matrix(NA, nrow = length(all_species_names), ncol = length(cheddar_metric_list))
+  colnames(df) <- names(cheddar_metric_list)
+  rownames(df) <- all_species_names
+  
+  for (i in seq_along(cheddar_metric_list)) {
+    network_name <- names(cheddar_metric_list)[i]
+    metric_values <- cheddar_metric_list[[i]]
+    
+    # Ensure that the names of metric_values match all_species_names
+    # This might require reordering or subsetting if not all species are present in every network's metric output
+    present_species <- names(metric_values)
+    df[present_species, network_name] <- metric_values
+  }
+  return(as.data.frame(df))
+}

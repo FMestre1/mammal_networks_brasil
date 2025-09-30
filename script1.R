@@ -44,6 +44,36 @@ metaweb_igraph <- igraph::graph_from_data_frame(edges1, directed = TRUE)
 igraph::write_graph(metaweb_igraph, file = "metaweb_brasil.graphml", format = "graphml")
 
 ##################################################################################################################
+#3. Convert metaweb to cheddar community
+
+# Load adajacency data frame
+metaweb_adjacency <- read.csv("C:\\Users\\mestr\\Documents\\0. Artigos\\brasil_predator_prey_mammal_networks\\metaweb_brasil.csv", sep=";")
+rownames(metaweb_adjacency) <- metaweb_adjacency$X
+metaweb_adjacency <- metaweb_adjacency[,-1]
+metaweb_adjacency[is.na(metaweb_adjacency)] <- 0
+
+# Convert to cheddar object
+#Nodes
+metaweb_nodes1 <- data.frame(colnames(metaweb_adjacency))
+names(metaweb_nodes1)[1] <- "node"
+
+#Edges
+metaweb_edges1 <- which(metaweb_adjacency == 1, arr.ind = TRUE)
+metaweb_edges1 <- data.frame(
+  consumer = rownames(metaweb_adjacency)[metaweb_edges1[,1]],
+  resource     = colnames(metaweb_adjacency)[metaweb_edges1[,2]]
+)
+
+metaweb_cheddar <- cheddar::Community(nodes = metaweb_nodes1, properties = list(title="metaweb"), trophic.links = metaweb_edges1)
+
+# Plot
+plot3d_fw(1, label_type = "all", list(metaweb_igraph), list(metaweb_cheddar))
+
+# Save & Load
+cheddar::SaveCommunity(metaweb_cheddar, "metaweb_cheddar.RData")
+metaweb_cheddar <- cheddar::LoadCommunity("metaweb_cheddar.RData")
+
+##################################################################################################################
 # 3. Create local networks adjacency matrices --------------------
 
 sites_names <- site_metrics$paisagem
@@ -169,12 +199,21 @@ save(local_networks_list_cheddar, file = "local_networks_list_cheddar.RData")
 save(community_collection, file = "community_collection_cheddar.RData")
 cheddar::SaveCollection(community_collection, "community_collection_folder") # this is an option from cheddar to save the full community collection
 
+#load these
+load("local_networks_list_igraph.RData")
+load("local_networks_list_cheddar.RData")
+load("community_collection_cheddar.RData")
+
+#Load cheddar community collection
+community_collection <- cheddar::LoadCollection("community_collection_folder")
+
 ##################################################################################################################
 # 5. Derive network metrics --------------------------------------
 
-# Based on the igraph list "local_networks_list_igraph" --------------------
+# 5.1. Based on the igraph list "local_networks_list_igraph" --------------------
 
-# In-degree distribution - should this be cumulatice or not?!
+# In-degree distribution - both culumative and non-cumulative
+
 local_networks_list_igraph <- get(load("local_networks_list_igraph.RData"))
 
 in_degree_distributions <- list()
@@ -225,7 +264,7 @@ names(in_degree_distributions_non_cumulative) <- names(local_networks_list_igrap
 names(out_degree_distributions_non_cumulative) <- names(local_networks_list_igraph)
 names(total_degree_distributions_non_cumulative) <- names(local_networks_list_igraph)
 
-# Save these lists
+# Save degree distribution lists
 save(in_degree_distributions, file = "in_degree_distributions.RData")
 save(out_degree_distributions, file = "out_degree_distributions.RData")
 save(total_degree_distributions, file = "total_degree_distributions.RData")
@@ -234,7 +273,7 @@ save(in_degree_distributions_non_cumulative, file = "in_degree_distributions.RDa
 save(out_degree_distributions_non_cumulative, file = "out_degree_distributions.RData")
 save(total_degree_distributions_non_cumulative, file = "total_degree_distributions.RData")
 
-# Using NetIndices
+# Using package NetIndices
 net_indices_metrics <- data.frame(
   N_number_of_compartments = rep(NA, 55),
   T_total_System_Throughput = rep(NA, 55),
@@ -263,11 +302,6 @@ net_indices_metrics$C_connectance[i] <- test.graph.properties$C
 net_indices_metrics$Tijbar_average_Link_Weight[i] <- test.graph.properties$Tijbar
 net_indices_metrics$TSTbar_average_Compartment_Throughflow[i] <- test.graph.properties$TSTbar
 net_indices_metrics$Cbar_compartmentalization[i] <- test.graph.properties$Cbar
-  
-
-  
-  
-  
   
 }
 
