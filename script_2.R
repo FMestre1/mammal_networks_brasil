@@ -5,6 +5,16 @@
 #FMestre
 #29-09-2025
 
+## --------------------------------------------------------------------------------------
+#  -- Paper --
+## --------------------------------------------------------------------------------------
+
+# Mestre, F., Rozenfeld, A., & Araújo, M. B. (2022). Human disturbances affect the topology 
+# of food webs. Ecology Letters, 25(11), 2476-2488.
+https://doi.org/10.1111/ele.14107
+
+## --------------------------------------------------------------------------------------
+
 # 0. Load Config
 # 1. Distance to pure topologies (as in Mestre et al 2022)
 # 2. Combine with Network Metrics
@@ -78,41 +88,63 @@ rownames(sig_matrix) <- response_vars
 
 for (i in 1:length(response_vars)) {
   for (j in 1:length(predictive_vars)) {
-    
+  
+# Get variable names as strings
+resp_name <- response_vars[i]
+pred_name <- predictive_vars[j]
 
+# Build formula using variable names
+formula <- as.formula(paste(resp_name, "~", pred_name))
 
-    #
-    p1 <- glm(metrics_with_distances_to_pure_topologies[,response_vars[i]] ~ site_metrics[,predictive_vars[j]])
-    
-    # Extract coefficients with p-values
-    sig_level <- round(coef(summary(p1))[2,4], 3)
+# Prepare data frame for modeling
+model_data <- data.frame(
+  response = metrics_with_distances_to_pure_topologies[, resp_name],
+  predictor = site_metrics[, pred_name]
+)
+names(model_data) <- c(resp_name, pred_name)
 
-    if(sig_level < 0.05){
+# Fit GLM model
+p1 <- glm(formula, data = model_data)
 
-      plot(
-          site_metrics[, predictive_vars[j]],
-          metrics_with_distances_to_pure_topologies[, response_vars[i]],
-          xlab = predictive_vars[j],     # label for the x-axis
-          ylab = response_vars[i]        # label for the y-axis
-          )
-      # Add model fit
-      xvals <- seq(min(site_metrics[, predictive_vars[j]], na.rm = TRUE),
-             max(site_metrics[, predictive_vars[j]], na.rm = TRUE),
-             length.out = 200)
+# Extract p-value for the predictor coefficient
+sig_level <- round(coef(summary(p1))[2, 4], 3)
 
-      yvals <- predict(p1, newdata = data.frame(`site_metrics[, predictive_vars[j]]` = xvals), type = "response")
+# Only plot if predictor significant at 0.05 level
+if (sig_level < 0.05) {
+  # Scatter plot of predictor vs response
+  plot(
+    site_metrics[, pred_name],
+    metrics_with_distances_to_pure_topologies[, resp_name],
+    xlab = pred_name,
+    ylab = resp_name
+  )
+  
+  # Generate sequence of predictor values for fitted line
+  xvals <- seq(
+    min(site_metrics[, pred_name], na.rm = TRUE),
+    max(site_metrics[, pred_name], na.rm = TRUE),
+    length.out = 200
+  )
+  
+  # Create newdata data frame for prediction with correct column name
+  newdata <- data.frame(xvals)
+  names(newdata) <- pred_name
+  
+  # Predict fitted values on newdata
+  yvals <- predict(p1, newdata = newdata, type = "response")
+  
+  # Add fitted line to plot
+  lines(xvals, yvals, col = "red", lwd = 2)
 
-      lines(xvals, yvals, col = "red", lwd = 2)
-      
+  sig_matrix[i, j] <- sig_level
+
+        }
     }
-    
-    sig_matrix[i, j] <- sig_level
-  }
-
 }
 
 #View
 View(sig_matrix)
 View(sig_matrix < 0.05)
+
 #Save
 write.csv(sig_matrix, file = "sig_matrix.csv")

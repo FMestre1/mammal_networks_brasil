@@ -1,6 +1,5 @@
 ##################################################################################################################
-#                                  Load data and creating igraph and cheddar objects
-#                                                   and network metrics                   
+#               Loading data, creating igraph and cheddar objects, and computing network metrics                   
 ##################################################################################################################
 
 #FMestre
