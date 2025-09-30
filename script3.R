@@ -128,7 +128,42 @@ save(Trophic_Height_df, file = "Trophic_Height_df.RData")
 # 6. Plot species metrics through landscape
 ## --------------------------------------------------------------------------------------
 
-## IVI ----------------------------------------------------------------------------------
+## 6.1. Page Rank -----------------------------------------------------------------------
+
+page_rank_df_T <- t(page_rank_df)
+landscape_metrics_page_rank_df_T <- cbind(site_metrics, page_rank_df_T)
+#names(landscape_metrics_page_rank_df_T)[27:54]
+
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,27], main = names(landscape_metrics_page_rank_df_T)[27])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,28], main = names(landscape_metrics_page_rank_df_T)[28])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,29], main = names(landscape_metrics_page_rank_df_T)[29])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,30], main = names(landscape_metrics_page_rank_df_T)[30])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,31], main = names(landscape_metrics_page_rank_df_T)[31])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,32], main = names(landscape_metrics_page_rank_df_T)[32])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,33], main = names(landscape_metrics_page_rank_df_T)[33])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,34], main = names(landscape_metrics_page_rank_df_T)[34])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,35], main = names(landscape_metrics_page_rank_df_T)[35])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,36], main = names(landscape_metrics_page_rank_df_T)[36])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,37], main = names(landscape_metrics_page_rank_df_T)[37])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,38], main = names(landscape_metrics_page_rank_df_T)[38])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,39], main = names(landscape_metrics_page_rank_df_T)[39])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,40], main = names(landscape_metrics_page_rank_df_T)[40])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,41], main = names(landscape_metrics_page_rank_df_T)[41])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,42], main = names(landscape_metrics_page_rank_df_T)[42])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,43], main = names(landscape_metrics_page_rank_df_T)[43])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,44], main = names(landscape_metrics_page_rank_df_T)[44])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,45], main = names(landscape_metrics_page_rank_df_T)[45])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,46], main = names(landscape_metrics_page_rank_df_T)[46])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,47], main = names(landscape_metrics_page_rank_df_T)[47])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,48], main = names(landscape_metrics_page_rank_df_T)[48])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,49], main = names(landscape_metrics_page_rank_df_T)[49])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,50], main = names(landscape_metrics_page_rank_df_T)[50])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,51], main = names(landscape_metrics_page_rank_df_T)[51])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,52], main = names(landscape_metrics_page_rank_df_T)[52])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,53], main = names(landscape_metrics_page_rank_df_T)[53])
+plot(landscape_metrics_page_rank_df_T$NatV_1400, landscape_metrics_page_rank_df_T[,54], main = names(landscape_metrics_page_rank_df_T)[54])
+
+## 6.2. IVI ------------------------------------------------------------------------------
 
 ivi_df_T <- t(ivi_df)
 landscape_metrics_ivi_df_T <- cbind(site_metrics, ivi_df_T)
@@ -163,7 +198,7 @@ plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,52], main
 plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,53], main = names(landscape_metrics_ivi_df_T)[53])
 plot(landscape_metrics_ivi_df_T$NatV_1400, landscape_metrics_ivi_df_T[,54], main = names(landscape_metrics_ivi_df_T)[54])
 
-## Betweenness -------------------------------------------------------------------------
+## 6.3. Betweenness ----------------------------------------------------------------------
 
 betweenness_df_T <- t(betweenness_df)
 landscape_metrics_betweenness_df_T <- cbind(site_metrics, betweenness_df_T)
