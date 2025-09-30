@@ -233,6 +233,3 @@ plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness
 plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,53], main = names(landscape_metrics_betweenness_df_T)[53])
 plot(landscape_metrics_betweenness_df_T$NatV_1400, landscape_metrics_betweenness_df_T[,54], main = names(landscape_metrics_betweenness_df_T)[54])
 
-
-
-

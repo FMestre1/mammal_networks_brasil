@@ -4,20 +4,25 @@
 
 # FMestre
 
+## -------------------------------------------------------------------------------
+# R Environment Setup
+## -------------------------------------------------------------------------------
+
 # Clear environment to start fresh  
 rm(list = ls())  
 
 # Set working directory (for portability, using `here::here()`)
 here::here()
 
-# Functions --------------------------------------------------------------------
+## -------------------------------------------------------------------------------
+# R Packages Installing and Loading
+## -------------------------------------------------------------------------------
 
 install_if_missing <- function(packages) {  
   to_install <- packages[!packages %in% installed.packages()[, "Package"]]  
   if (length(to_install) > 0) install.packages(to_install, dependencies = TRUE)  
 }
 
-# -----------------------------------------------------------------------------
 
 # List of required packages  
 required_packages <- c("igraph", "cheddar", "taxize", "rgl", "NetIndices", "influential", "caret")
@@ -31,8 +36,9 @@ invisible(lapply(required_packages, function(pkg) {
 # Clean up variables
 rm(required_packages, install_if_missing)
 
-# -------------------------------------------------------------------------------
+## -------------------------------------------------------------------------------
 # Required functions
+## -------------------------------------------------------------------------------
 
 plot3d_fw <- function(position_list, label_type = "all", igraph_list, cheddar_list) {
   
