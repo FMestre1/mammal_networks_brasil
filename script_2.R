@@ -144,7 +144,6 @@ if (sig_level < 0.05) {
 
 #View
 View(sig_matrix)
-View(sig_matrix < 0.05)
 
 #Save
 write.csv(sig_matrix, file = "sig_matrix.csv")
